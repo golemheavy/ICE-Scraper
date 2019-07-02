@@ -98,6 +98,7 @@ $(document).ready(function() {
 
     articleToSave.saved = true;
     // Using a patch method to be semantic since this is an update to an existing record in our collection
+	// note: why does the above comment say patch when the method below actually uses PUT?
     $.ajax({
       method: "PUT",
       url: "/api/headlines/" + articleToSave._id,

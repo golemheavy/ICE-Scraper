@@ -35,7 +35,7 @@ const Article = mongoose.model("Article", articleSchema);
 const siteUrl = "https://www.quantamagazine.org/";
 
 // Main route (simple Hello World Message)
-app.get("/", function(req, res) {
+app.get("/api/fetch", function(req, res) {
 	axios.get(siteUrl).then(function(response) {
 		// Load the HTML into cheerio and save it to a variable
 		// '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
@@ -59,7 +59,6 @@ app.get("/", function(req, res) {
 		});
 		
 		// Log the results once you've looped through each of the elements found with cheerio
-		//console.log(results);
 		results.forEach(function(element) {
 			const article = new Article({title:element.title,link:element.link});
 			article.save(function (err, article) {
@@ -68,7 +67,7 @@ app.get("/", function(req, res) {
 			});
 		})
 	});
-	res.send("Hello world -- check server console log");
+	res.send("Finished scraping articles").status(200);
 });
 
 // Set the app to listen on port 3000

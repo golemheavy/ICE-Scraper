@@ -24,6 +24,7 @@ In this assignment, you'll create a web app that lets users view and leave comme
    5. axios
 
 3. **NOTE**: If you want to earn complete credit for your work, you must use all five of these packages in your assignment.
+(UPDATE: Antonio Gage said that the requirement to use express-handlebars has been relaxed.)
 
 4. In order to deploy your project to Heroku, you must set up an mLab provision. mLab is remote MongoDB database that Heroku supports natively. Follow these steps to get it running:
 

@@ -1,0 +1,25 @@
+{
+  "name": "ice-scraper",
+  "version": "1.0.0",
+  "description": "Integrated Content Excise site scraper utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://98f850ffa50237c202d6799594a83d61931b4248@github.com/golemheavy/ICE-Scraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/golemheavy/ICE-Scraper/issues"
+  },
+  "homepage": "https://github.com/golemheavy/ICE-Scraper#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.2"
+  }
+}

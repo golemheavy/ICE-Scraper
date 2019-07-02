@@ -91,13 +91,15 @@ app.get("/api/fetch", function(req, res) {
 
 
 app.put("/api/headlines", function(req, res) {
-	res.end();
+		if (data.saved === true) headlines.saved.push({url: data.url, headline: data.headline});
+		res.send("Article saved.").status(200);
 });
 
 
 app.get("/api/headlines", function(req, res) {
 	//console.log(req.query);
 	if (req.query.saved === false) res.send(headlines.unsaved).status(200);
+	else if (req.query.saved === true) res.send(headlines.saved).status(200);
 	
 	res.end(); 
 });

@@ -55,7 +55,7 @@ app.get("/api/fetch", function(req, res) {
 				url: link
 			});
 		});
-		
+		console.log(results);
 		res.send(results).status(200);
 	
 	/*

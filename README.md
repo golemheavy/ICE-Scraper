@@ -1,6 +1,5 @@
 # ICE-Scraper
-Integrated Content Excise site scraper utility
-OR Internet Content Extractor
+Internet Content Extractor site scraper utility
 
 # All the News That's Fit to Scrape
 

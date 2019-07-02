@@ -33,34 +33,48 @@ const Article = mongoose.model("Article", articleSchema);
 
 const siteUrl = "https://www.quantamagazine.org/";
 
+const headlines = {
+	saved : [],
+	unsaved : []
+}
+
 app.get("/api/fetch", function(req, res) {
 	axios.get(siteUrl).then(function(response) {
 		// Load the HTML into cheerio and save it to a variable
 		// '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-		var $ = cheerio.load(response.data);
+		const $ = cheerio.load(response.data);
 		
 		// An empty array to save the data that we'll scrape
-		var results = [];
+		let results = [];
 		
-		// Select each element in the HTML body from which you want information.
-		// NOTE: Cheerio selectors function similarly to jQuery's selectors,
-		// but be sure to visit the package's npm page to see how it works
 		$("div.two--large").each(function(i, element) {
 			var title = $(element).find("h2.card__title").text();
 			var link = $(element).find("a").attr("href");
 			
 			// Save these results in an object that we'll push into the results array we defined earlier
 			results.push({
-				headline: title,
-				url: link
+				"headline": title,
+				"url": link
 			});
+			
 		});
-		//console.log(JSON.parse(results));
-		//res.send(JSON.parse(results)).status(200);
-		res.end();
+		
+		results.map(x => {
+			let matched = false;
+			for (let y in headlines.saved) {
+				if (x.url === headlines.saved.url) {
+					matched = true;
+					break;
+				}
+			}
+			if (matched === false) headlines.unsaved.push(x)
+		});
+		
+		
+		return results;
 	
-	/*
-		// The code below will write the elements of results to mongoDB
+	/*	// The code below will write the elements of results to mongoDB
+		
 		results.forEach(function(element) {
 			const article = new Article({title:element.title,link:element.link});
 			article.save(function (err, article) {
@@ -68,21 +82,24 @@ app.get("/api/fetch", function(req, res) {
 				console.log(article);
 			});
 		})
-
 	*/
+	}).then(function(results) {
+				//console.log(results);
+				res.send(results).status(200);
 	});
-	//res.send("Finished fetching articles").status(200);
 });
 
 
 app.put("/api/headlines", function(req, res) {
-	res.end(); // req.params query string 
+	res.end();
 });
 
 
 app.get("/api/headlines", function(req, res) {
-	console.log(req.params);
-	res.end(); // req.params query string 
+	//console.log(req.query);
+	if (req.query.saved === false) res.send(headlines.unsaved).status(200);
+	
+	res.end(); 
 });
 
 

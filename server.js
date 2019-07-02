@@ -74,7 +74,12 @@ app.get("/api/fetch", function(req, res) {
 });
 
 
-app.put("/api/headline", function(req, res) {
+app.put("/api/headlines", function(req, res) {
+	res.end(); // req.params query string 
+});
+
+
+app.get("/api/headlines", function(req, res) {
 	res.end(); // req.params query string 
 });
 

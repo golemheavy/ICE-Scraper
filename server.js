@@ -31,10 +31,8 @@ const articleSchema = new Schema({
 
 const Article = mongoose.model("Article", articleSchema);
 
-
 const siteUrl = "https://www.quantamagazine.org/";
 
-// Main route (simple Hello World Message)
 app.get("/api/fetch", function(req, res) {
 	axios.get(siteUrl).then(function(response) {
 		// Load the HTML into cheerio and save it to a variable
@@ -58,7 +56,10 @@ app.get("/api/fetch", function(req, res) {
 			});
 		});
 		
-		// Log the results once you've looped through each of the elements found with cheerio
+		res.send(results).status(200);
+	
+	/*
+		// The code below will write the elements of results to mongoDB
 		results.forEach(function(element) {
 			const article = new Article({title:element.title,link:element.link});
 			article.save(function (err, article) {
@@ -66,8 +67,20 @@ app.get("/api/fetch", function(req, res) {
 				console.log(article);
 			});
 		})
+
+	*/
 	});
-	res.send("Finished scraping articles").status(200);
+	res.send("Finished fetching articles").status(200);
+});
+
+
+app.put("/api/headline", function(req, res) {
+	res.end(); // req.params query string 
+});
+
+
+app.get("/api/clear", function(req, res) {
+	res.end();
 });
 
 // Set the app to listen on port 3000

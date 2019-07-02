@@ -55,8 +55,9 @@ app.get("/api/fetch", function(req, res) {
 				url: link
 			});
 		});
-		console.log(results);
-		res.send(results).status(200);
+		//console.log(JSON.parse(results));
+		//res.send(JSON.parse(results)).status(200);
+		res.end();
 	
 	/*
 		// The code below will write the elements of results to mongoDB
@@ -80,6 +81,7 @@ app.put("/api/headlines", function(req, res) {
 
 
 app.get("/api/headlines", function(req, res) {
+	console.log(req.params);
 	res.end(); // req.params query string 
 });
 

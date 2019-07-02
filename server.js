@@ -104,7 +104,9 @@ app.get("/api/headlines", function(req, res) {
 
 
 app.get("/api/clear", function(req, res) {
-	res.end();
+	headlines.saved = [];
+	headlines.unsaved = [];
+	res.send("All headlines cleared from server.").status(200);
 });
 
 // Set the app to listen on port 3000

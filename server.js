@@ -51,8 +51,8 @@ app.get("/api/fetch", function(req, res) {
 			
 			// Save these results in an object that we'll push into the results array we defined earlier
 			results.push({
-				title: title,
-				link: link
+				headline: title,
+				url: link
 			});
 		});
 		
@@ -70,7 +70,7 @@ app.get("/api/fetch", function(req, res) {
 
 	*/
 	});
-	res.send("Finished fetching articles").status(200);
+	//res.send("Finished fetching articles").status(200);
 });
 
 

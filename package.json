@@ -4,7 +4,8 @@
   "description": "Integrated Content Excise site scraper utility",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,6 @@
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
     "mongoose": "^5.6.2"
-  }
+  },
+  "devDependencies": {}
 }

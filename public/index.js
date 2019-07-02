@@ -121,6 +121,7 @@ $(document).ready(function() {
 			// and let the user know how many unique articles we were able to save
 			initPage();
 			bootbox.alert($("<h3 class='text-center m-top-80'>").text(data.message));
+			console.log(data.message)
 		});
 	}
 

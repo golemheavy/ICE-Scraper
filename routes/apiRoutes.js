@@ -36,9 +36,7 @@ const headlines = {
 	unsaved : [] //this item should be promoted to its own array rather than a member of an object
 };
 
-
 //headlines.saved.push({"headline":"This is a test","url":"/thisisatest"});
-
 
 app.get("/api/fetch", function(req, res) {
 	axios.get(siteUrl).then(function(response) {
@@ -54,18 +52,17 @@ app.get("/api/fetch", function(req, res) {
 			var link = $(element).find("a").attr("href");
 			
 			// Save these results in an object that we'll push into the results array we defined earlier
-			let article = new Article;
-			article.headline = title;
-			article.url = link;
+			let article = new Article({headline: title, url: link});
 			results.push(article);
+			article.save();
 			
 		});
 		console.log("results:\t");
-		results.map( x => console.log(x));
+		//results.map( x => console.log(x));
 		headlines.unsaved = results;
-		headlines.saved = results;
+		headlines.saved = results; // also, save them to Mongo here for testing purposes
 		console.log("headlines.unsaved:");
-		headlines.unsaved.map( x => console.log(x));
+		//headlines.unsaved.map( x => console.log(x));
 		/*
 		results.map(x => {
 			let matched = false;
@@ -78,19 +75,7 @@ app.get("/api/fetch", function(req, res) {
 			if (matched === false) headlines.unsaved.push(x)
 		});
 	*/
-		//return results; we don't return the articles here. we return then in the GET /api/headlines
-		// here we should only be pushing the items in.
 	
-	/*	// The code below will write the elements of results to mongoDB
-		
-		results.forEach(function(element) {
-			const article = new Article({title:element.title,link:element.link});
-			article.save(function (err, article) {
-				if (err) return console.error(err);
-				console.log(article);
-			});
-		})
-	*/
 	}).then(function(results) {
 		//console.log(results);
 		//res.send(results).status(200); // see comments above for why this isn't being returned here
@@ -98,18 +83,29 @@ app.get("/api/fetch", function(req, res) {
 	});
 });
 
-/*
-app.put("/api/headlines", function(req, res) {
-		if (data.saved === true) headlines.saved.push({url: data.url, headline: data.headline});
-		res.send("Article saved.").status(200); // saved should be eliminated in favor of being written to MongoDB. Unsaved will be saved in server-side memory
+app.put("/api/headlines/*", function(req, res) {
+	console.log("PUT route hit");
+	console.log(req.params[0]);
+	if (req.params[0]) {
+		// save to mongo
+		
+	}
+	//if (data.saved === true) headlines.saved.push({url: data.url, headline: data.headline});
+	//res.send("Article saved.").status(200); // saved should be eliminated in favor of being written to MongoDB. Unsaved will be saved in server-side memory
 });
-*/
 
 app.get("/api/headlines", function(req, res) {
+	
+	console.log("req.query.saved:");
 	console.log(req.query.saved);
+	
+	console.log("saved in mem:");
+	console.log(headlines.saved);
+		
+		
 	if (req.query.saved) {  // this function should pull from MongoDB instad of a global variable
-		console.log(headlines.saved);
-		res.send(headlines.saved).status(200);
+		Article.find({}).then(function (articles) {res.send(articles).status(200);});
+		//res.send(headlines.saved).status(200);
 	}
 	else if (!req.query.saved) {
 		console.log(headlines.unsaved);

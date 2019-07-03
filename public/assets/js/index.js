@@ -101,6 +101,7 @@ $(document).ready(function() {
 		.remove();
 		
 		articleToSave.saved = true;
+		console.log("making AJAX call");
 		// Using a patch method to be semantic since this is an update to an existing record in our collection
 		// note: why does the above comment say patch when the method below actually uses PUT?
 		$.ajax({

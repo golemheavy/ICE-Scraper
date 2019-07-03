@@ -98,16 +98,14 @@ app.get("/api/headlines", function(req, res) {
 	
 	console.log("req.query.saved:");
 	console.log(req.query.saved);
-	
-	console.log("saved in mem:");
-	console.log(headlines.saved);
 		
 		
-	if (req.query.saved) {  // this function should pull from MongoDB instad of a global variable
+	if (req.query.saved === true) {  // this function should pull from MongoDB instad of a global variable
 		Article.find({}).then(function (articles) {res.send(articles).status(200);});
 		//res.send(headlines.saved).status(200);
 	}
-	else if (!req.query.saved) {
+	else if (req.query.saved === false) {
+		console.log("unsaved (stored in server memory):");
 		console.log(headlines.unsaved);
 		res.send(headlines.unsaved).status(200);
 	}

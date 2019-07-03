@@ -84,7 +84,7 @@ app.get("/api/fetch", function(req, res) {
 	}).then(function(results) {
 		//console.log(results);
 		//res.send(results).status(200); // see comments above for why this isn't being returned here
-		res.send("success").status(200);
+		res.send({message:"success"}).status(200);
 	});
 });
 

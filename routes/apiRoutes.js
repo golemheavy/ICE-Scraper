@@ -36,6 +36,9 @@ const headlines = {
 	unsaved : [] //this item should be promoted to its own array rather than a member of an object
 }
 
+
+headlines.saved.push({"headline":"This is a test","url":"/thisisatest"});
+
 app.get("/api/fetch", function(req, res) {
 	axios.get(siteUrl).then(function(response) {
 		// Load the HTML into cheerio and save it to a variable
@@ -94,13 +97,28 @@ app.put("/api/headlines", function(req, res) {
 });
 
 app.get("/api/headlines", function(req, res) {
-	//console.log(req.query);
-	if (req.query.saved === false) res.send(headlines.unsaved).status(200);
-	else if (req.query.saved === true) res.send(headlines.saved).status(200);
+	console.log(req.query.saved);
+	if (req.query.saved) {
+		console.log(headlines.saved);
+		res.send(headlines.saved).status(200);
+	}
+	else if (req.query.saved === false) {
+		console.log(headlines.unsaved);
+		res.send(headlines.unsaved).status(200);
+	}
 	
-	res.end(); 
 });
-
+	/*
+	console.log(req.query)
+		if (req.query.saved) {
+			console.log("api/headlines?saved=true hit");
+			// headlines.saved.push({url: data.url, headline: data.headline});
+			// res.send("Article saved.").status(200); // saved should be eliminated in favor of being written to MongoDB. Unsaved will be saved in server-side memory		
+		res.send(headlines.saved);
+		}
+	
+	*/
+	
 app.get("/api/clear", function(req, res) {  // is this route supposed to: 1) clear all saved, 2) clear all unsaved, or 3) clear both saved and unsaved
 	headlines.saved = [];
 	headlines.unsaved = [];

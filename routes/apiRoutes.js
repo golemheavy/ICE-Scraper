@@ -54,14 +54,13 @@ app.get("/api/fetch", function(req, res) {
 			// Save these results in an object that we'll push into the results array we defined earlier
 			let article = new Article({headline: title, url: link});
 			results.push(article);
-			article.save();
+			//article.save();
 			
 		});
 		console.log("results:\t");
-		//results.map( x => console.log(x));
+		console.log(results);
 		headlines.unsaved = results;
-		headlines.saved = results; // also, save them to Mongo here for testing purposes
-		console.log("headlines.unsaved:");
+		
 		//headlines.unsaved.map( x => console.log(x));
 		/*
 		results.map(x => {
@@ -85,10 +84,29 @@ app.get("/api/fetch", function(req, res) {
 
 app.put("/api/headlines/*", function(req, res) {
 	console.log("PUT route hit");
-	console.log(req.params[0]);
-	if (req.params[0]) {
+	let id = req.params[0];
+	if (id) { 
+		headlines.unsaved.map( x => {
+			if (x._id == id) {
+				console.log(x);
+				let article = new Article({headline: x.headline, url: x.url});
+				//Article.find({ url: x.url }).then(function (err, docs) {
+					//if (err) return console.log(err);
+					
+					//if(article) {
+					//	console.log("Article already saved.");
+					//}
+					//else {
+						console.log("Saving article.");
+						article.save();
+					//
+					//}
+				//});
+			}
+	//Article.findById(req.params[0], function (err, article) {console.log(article); article.save();});
 		// save to mongo
-		
+	
+		});
 	}
 	//if (data.saved === true) headlines.saved.push({url: data.url, headline: data.headline});
 	//res.send("Article saved.").status(200); // saved should be eliminated in favor of being written to MongoDB. Unsaved will be saved in server-side memory
@@ -100,11 +118,11 @@ app.get("/api/headlines", function(req, res) {
 	console.log(req.query.saved);
 		
 		
-	if (req.query.saved === true) {  // this function should pull from MongoDB instad of a global variable
-		Article.find({}).then(function (articles) {res.send(articles).status(200);});
+	if (req.query.saved === "true") {  // this function should pull from MongoDB instad of a global variable
+		Article.find({}).then(function (articles) {console.log(articles);res.send(articles).status(200);});
 		//res.send(headlines.saved).status(200);
 	}
-	else if (req.query.saved === false) {
+	else if (req.query.saved === "false") {
 		console.log("unsaved (stored in server memory):");
 		console.log(headlines.unsaved);
 		res.send(headlines.unsaved).status(200);
@@ -116,6 +134,7 @@ app.get("/api/headlines", function(req, res) {
 app.get("/api/clear", function(req, res) {  // is this route supposed to: 1) clear all saved, 2) clear all unsaved, or 3) clear both saved and unsaved
 	headlines.saved = [];
 	headlines.unsaved = [];
+	Article.remove({}).exec();
 	res.send("All headlines cleared from server.").status(200);
 });
 

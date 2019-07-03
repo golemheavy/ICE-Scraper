@@ -11,9 +11,9 @@ const app = express();
 app.use(express.static("public"));
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines"; // change this because of a deprecation warning. should pass an object with useNewUrlParser value
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -34,8 +34,8 @@ const Article = mongoose.model("Article", articleSchema);
 const siteUrl = "https://www.quantamagazine.org/";
 
 const headlines = {
-	saved : [],
-	unsaved : []
+	saved : [],  // this should be eliminated in favor of being written to MongoDB
+	unsaved : [] //this item should be promoted to its own array rather than a member of an object
 }
 
 app.get("/api/fetch", function(req, res) {
@@ -62,16 +62,16 @@ app.get("/api/fetch", function(req, res) {
 		results.map(x => {
 			let matched = false;
 			for (let y in headlines.saved) {
-				if (x.url === headlines.saved.url) {
+				if (x.url === headlines.saved[y].url) {
 					matched = true;
 					break;
 				}
 			}
 			if (matched === false) headlines.unsaved.push(x)
 		});
-		
-		
-		return results;
+	
+		//return results; we don't return the articles here. we return then in the GET /api/headlines
+		// here we should only be pushing the items in.
 	
 	/*	// The code below will write the elements of results to mongoDB
 		
@@ -84,17 +84,16 @@ app.get("/api/fetch", function(req, res) {
 		})
 	*/
 	}).then(function(results) {
-				//console.log(results);
-				res.send(results).status(200);
+		//console.log(results);
+		//res.send(results).status(200); // see comments above for why this isn't being returned here
+		res.send("success").status(200);
 	});
 });
 
-
 app.put("/api/headlines", function(req, res) {
 		if (data.saved === true) headlines.saved.push({url: data.url, headline: data.headline});
-		res.send("Article saved.").status(200);
+		res.send("Article saved.").status(200); // saved should be eliminated in favor of being written to MongoDB. Unsaved will be saved in server-side memory
 });
-
 
 app.get("/api/headlines", function(req, res) {
 	//console.log(req.query);
@@ -104,8 +103,7 @@ app.get("/api/headlines", function(req, res) {
 	res.end(); 
 });
 
-
-app.get("/api/clear", function(req, res) {
+app.get("/api/clear", function(req, res) {  // is this route supposed to: 1) clear all saved, 2) clear all unsaved, or 3) clear both saved and unsaved
 	headlines.saved = [];
 	headlines.unsaved = [];
 	res.send("All headlines cleared from server.").status(200);

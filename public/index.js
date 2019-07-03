@@ -121,9 +121,8 @@ $(document).ready(function() {
 		
 		$.get("/api/fetch", function(data){
 			console.log(data);
-			console.log(data.length);
 			initPage();
-			//bootbox.alert($("<h3 class='text-center m-top-80'>retrieved " + data.length + "items")); // this is not working
+			
 		})
 	}
 

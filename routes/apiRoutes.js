@@ -23,8 +23,8 @@ db.once('open', function() {
 const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
-    title:  String,
-    link: String
+    headline:  String,
+    url: String
 });
 
 const Article = mongoose.model("Article", articleSchema);
@@ -34,10 +34,11 @@ const siteUrl = "https://www.quantamagazine.org/";
 const headlines = {
 	saved : [],  // this should be eliminated in favor of being written to MongoDB
 	unsaved : [] //this item should be promoted to its own array rather than a member of an object
-}
+};
 
 
-headlines.saved.push({"headline":"This is a test","url":"/thisisatest"});
+//headlines.saved.push({"headline":"This is a test","url":"/thisisatest"});
+
 
 app.get("/api/fetch", function(req, res) {
 	axios.get(siteUrl).then(function(response) {
@@ -53,13 +54,19 @@ app.get("/api/fetch", function(req, res) {
 			var link = $(element).find("a").attr("href");
 			
 			// Save these results in an object that we'll push into the results array we defined earlier
-			results.push({
-				"headline": title,
-				"url": link
-			});
+			let article = new Article;
+			article.headline = title;
+			article.url = link;
+			results.push(article);
 			
 		});
-		
+		console.log("results:\t");
+		results.map( x => console.log(x));
+		headlines.unsaved = results;
+		headlines.saved = results;
+		console.log("headlines.unsaved:");
+		headlines.unsaved.map( x => console.log(x));
+		/*
 		results.map(x => {
 			let matched = false;
 			for (let y in headlines.saved) {
@@ -70,7 +77,7 @@ app.get("/api/fetch", function(req, res) {
 			}
 			if (matched === false) headlines.unsaved.push(x)
 		});
-	
+	*/
 		//return results; we don't return the articles here. we return then in the GET /api/headlines
 		// here we should only be pushing the items in.
 	
@@ -91,33 +98,26 @@ app.get("/api/fetch", function(req, res) {
 	});
 });
 
+/*
 app.put("/api/headlines", function(req, res) {
 		if (data.saved === true) headlines.saved.push({url: data.url, headline: data.headline});
 		res.send("Article saved.").status(200); // saved should be eliminated in favor of being written to MongoDB. Unsaved will be saved in server-side memory
 });
+*/
 
 app.get("/api/headlines", function(req, res) {
 	console.log(req.query.saved);
-	if (req.query.saved) {
+	if (req.query.saved) {  // this function should pull from MongoDB instad of a global variable
 		console.log(headlines.saved);
 		res.send(headlines.saved).status(200);
 	}
-	else if (req.query.saved === false) {
+	else if (!req.query.saved) {
 		console.log(headlines.unsaved);
 		res.send(headlines.unsaved).status(200);
 	}
+	else res.end();
 	
 });
-	/*
-	console.log(req.query)
-		if (req.query.saved) {
-			console.log("api/headlines?saved=true hit");
-			// headlines.saved.push({url: data.url, headline: data.headline});
-			// res.send("Article saved.").status(200); // saved should be eliminated in favor of being written to MongoDB. Unsaved will be saved in server-side memory		
-		res.send(headlines.saved);
-		}
-	
-	*/
 	
 app.get("/api/clear", function(req, res) {  // is this route supposed to: 1) clear all saved, 2) clear all unsaved, or 3) clear both saved and unsaved
 	headlines.saved = [];

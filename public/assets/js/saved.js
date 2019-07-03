@@ -1,5 +1,8 @@
+const newssite_url = "https://www.quantamagazine.org"; 
+
 /* global bootbox */
 $(document).ready(function() {
+	
 	// Getting a reference to the article container div we will be rendering all articles inside of
 	var articleContainer = $(".article-container");
 	// Adding event listeners for dynamically generated buttons for deleting articles,
@@ -49,7 +52,7 @@ $(document).ready(function() {
 		var cardHeader = $("<div class='card-header'>").append(
 		$("<h3>").append(
 			$("<a class='article-link' target='_blank' rel='noopener noreferrer'>")
-			.attr("href", article.url)
+			.attr("href", newssite_url + article.url)
 			.text(article.headline),
 			$("<a class='btn btn-danger delete'>Delete From Saved</a>"),
 			$("<a class='btn btn-info notes'>Article Notes</a>")

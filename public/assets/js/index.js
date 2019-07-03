@@ -1,3 +1,5 @@
+const newssite_url = "https://www.quantamagazine.org"; 
+
 /* global bootbox */
 $(document).ready(function() {
 	// Setting a reference to the article-container div where all the dynamic content will go
@@ -46,7 +48,7 @@ $(document).ready(function() {
 		var cardHeader = $("<div class='card-header'>").append(
 			$("<h3>").append(
 				$("<a class='article-link' target='_blank' rel='noopener noreferrer'>")
-				.attr("href", article.url)
+				.attr("href", newssite_url + article.url)
 				.text(article.headline),
 				$("<a class='btn btn-success save'>Save Article</a>")
 			)
@@ -137,6 +139,7 @@ $(document).ready(function() {
 			// and let the user know how many unique articles we were able to save
 			initPage();
 			bootbox.alert($("<h3 class='text-center m-top-80'>").text(data.message));
+			console.log("data.message: " + data.message);
 		});
 	}
 

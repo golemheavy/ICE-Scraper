@@ -52,19 +52,29 @@ app.get("/api/fetch", function(req, res) {
 		let results = [];
 		
 		$("div.two--large").each(function(i, element) {
-			var title = $(element).find("h2.card__title").text();
-			var link = $(element).find("a").attr("href");
 			
-			// Save these results in an object that we'll push into the results array we defined earlier
-			let article = new Article({headline: title, url: link});
-			results.push(article);
+			let title = $(element).find("h2.card__title").text();
+			let link = $(element).find("a").attr("href");
+			
+			Article.find({ url: link }).then(function (mongoArticle) {	
+				if(mongoArticle.length > 0) {
+					console.log("This article already exists in MongoDB"); // so we will not add it to unsaved
+					console.log(mongoArticle);
+				}
+				else {
+					// Save these results in an object that we'll push into the results array we defined earlier
+					let article = new Article({headline: title, url: link});
+					results.push(article);
+				}
+			});
 		});
+		
 		console.log("results:\t");
 		console.log(results);
 		headlines.unsaved = results;
 	
 	}).then(function(results) {
-		res.send({message:"success"}).status(200);
+		res.send(results).status(200);
 	});
 });
 
@@ -153,6 +163,7 @@ app.post("/api/notes", function(req, res) {
 app.put("/api/notes/*", function(req, res) {
 	if (req.params[0]) {
 		Article.findById(req.params[0], function (err, article) {
+			if (err) return console.log(err);
 			if(article) {
 				console.log(article);
 					res.send(article)

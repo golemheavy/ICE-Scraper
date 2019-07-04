@@ -148,19 +148,25 @@ app.get("/api/clear", function(req, res) {  // is this route supposed to: 1) cle
 	res.send("All headlines cleared from server.").status(200);
 });
 
-/*
 app.delete("/api/notes/*", function(req, res) {
 	console.log("DELETE route hit");
 	console.log(req.params);
+	// delete the note with the id passed
+	Note.findById(req.params[0], function (err, note) {
+		if (err) return console.log(err);
+		note.remove();
+		res.status(200);
+	});
 });
-*/
-
 
 app.get("/api/notes/*", function(req, res) {
 	console.log('"view current note" route hit');
 	console.log(req.params[0]);
 	if (req.params[0]) {
-		Note.find({ _headlineId: req.params[0]}, function (err, note) { res.send(note) });
+		Note.find({ _headlineId: req.params[0]}, function (err, note) {
+			if (err) return console.log(err);
+			res.send(note).status(200);
+		});
 	}
 });
 

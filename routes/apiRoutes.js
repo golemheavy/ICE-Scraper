@@ -154,8 +154,7 @@ app.delete("/api/notes/*", function(req, res) {
 	// delete the note with the id passed
 	Note.findById(req.params[0], function (err, note) {
 		if (err) return console.log(err);
-		note.remove();
-		res.status(200);
+		note.remove().then(res.end().status(200));
 	});
 });
 
@@ -176,6 +175,7 @@ app.post("/api/notes", function(req, res) {
 	console.log(req.body);
 	// let note = new Note(req.body).save(); // probably dont need let note = 
 	new Note(req.body).save();
+	res.send("note saved").status(200);
 });
 
 app.put("/api/notes/*", function(req, res) {

@@ -24,18 +24,20 @@ const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
     headline:  String,
-    url: String,
-	note: String
+    url: String
 });
 
 const Article = mongoose.model("Article", articleSchema);
+
+const noteSchema = new Schema({});
+
+const Note = mongoose.model("Note", noteSchema);
 
 const siteUrl = "https://www.quantamagazine.org/";
 
 const headlines = {
 	saved : [],  // this should be eliminated in favor of being written to MongoDB
-	unsaved : [], //this item should be promoted to its own array rather than a member of an object
-	note: ""
+	unsaved : [] //this item should be promoted to its own array rather than a member of an object
 };
 
 //headlines.saved.push({"headline":"This is a test","url":"/thisisatest"});
@@ -54,7 +56,7 @@ app.get("/api/fetch", function(req, res) {
 			var link = $(element).find("a").attr("href");
 			
 			// Save these results in an object that we'll push into the results array we defined earlier
-			let article = new Article({headline: title, url: link, note: ""});
+			let article = new Article({headline: title, url: link});
 			results.push(article);
 			//article.save();
 			
@@ -150,12 +152,21 @@ app.delete("/api/notes/*", function(req, res) {
 });
 */
 
+
 app.get("/api/notes/*", function(req, res) {
 	console.log('"view current note" route hit');
 	console.log(req.params[0]);
 	if (req.params[0]) {
-		Article.findById(req.params[0], function (err, article) { res.send(article.note) });
+		Note.find({ _headlineId: req.params[0]}, function (err, note) { res.send(note) });
 	}
+});
+
+
+app.post("/api/notes", function(req, res) {
+	console.log('"save  note" POST route hit');
+	console.log(req.body);
+	let note = new Note(req.body).save();
+	
 });
 
 app.put("/api/notes/*", function(req, res) {

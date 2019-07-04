@@ -90,18 +90,21 @@ app.put("/api/headlines/*", function(req, res) {
 			if (x._id == id) {
 				console.log(x);
 				let article = new Article({headline: x.headline, url: x.url});
-				//Article.find({ url: x.url }).then(function (err, docs) {
+				Article.find({ url: article.url }).then(function (mongoArticle) {
 					//if (err) return console.log(err);
 					
-					//if(article) {
-					//	console.log("Article already saved.");
-					//}
-					//else {
+					console.log("mongoArticle:");
+					console.log(mongoArticle);
+					
+					if(mongoArticle.length > 0) {
+						console.log("Article already saved.");
+					}
+					else {
 						console.log("Saving article.");
 						article.save();
-					//
-					//}
-				//});
+					}
+					
+				});
 			}
 	//Article.findById(req.params[0], function (err, article) {console.log(article); article.save();});
 		// save to mongo
@@ -136,6 +139,17 @@ app.get("/api/clear", function(req, res) {  // is this route supposed to: 1) cle
 	headlines.unsaved = [];
 	Article.remove({}).exec();
 	res.send("All headlines cleared from server.").status(200);
+});
+
+app.delete("/api/notes/*", function(req, res) {
+	console.log("DELETE route hit");
+	console.log(req.params);
+});
+
+app.delete("/api/headlines/*", function(req, res) {
+	console.log("DELETE route hit");
+	console.log(req.params[0]);
+	Article.findById(req.params[0], function (err, article) { if(article) article.remove();});
 });
 
 };

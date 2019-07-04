@@ -29,7 +29,10 @@ const articleSchema = new Schema({
 
 const Article = mongoose.model("Article", articleSchema);
 
-const noteSchema = new Schema({});
+const noteSchema = new Schema({
+	_headlineId: String,
+	noteText: String
+});
 
 const Note = mongoose.model("Note", noteSchema);
 
@@ -165,8 +168,8 @@ app.get("/api/notes/*", function(req, res) {
 app.post("/api/notes", function(req, res) {
 	console.log('"save  note" POST route hit');
 	console.log(req.body);
-	let note = new Note(req.body).save();
-	
+	// let note = new Note(req.body).save(); // probably dont need let note = 
+	new Note(req.body).save();
 });
 
 app.put("/api/notes/*", function(req, res) {

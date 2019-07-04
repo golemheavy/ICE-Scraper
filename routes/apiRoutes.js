@@ -24,7 +24,8 @@ const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
     headline:  String,
-    url: String
+    url: String,
+	note: String
 });
 
 const Article = mongoose.model("Article", articleSchema);
@@ -33,7 +34,8 @@ const siteUrl = "https://www.quantamagazine.org/";
 
 const headlines = {
 	saved : [],  // this should be eliminated in favor of being written to MongoDB
-	unsaved : [] //this item should be promoted to its own array rather than a member of an object
+	unsaved : [], //this item should be promoted to its own array rather than a member of an object
+	note: ""
 };
 
 //headlines.saved.push({"headline":"This is a test","url":"/thisisatest"});
@@ -52,7 +54,7 @@ app.get("/api/fetch", function(req, res) {
 			var link = $(element).find("a").attr("href");
 			
 			// Save these results in an object that we'll push into the results array we defined earlier
-			let article = new Article({headline: title, url: link});
+			let article = new Article({headline: title, url: link, note: ""});
 			results.push(article);
 			//article.save();
 			
@@ -141,9 +143,34 @@ app.get("/api/clear", function(req, res) {  // is this route supposed to: 1) cle
 	res.send("All headlines cleared from server.").status(200);
 });
 
+/*
 app.delete("/api/notes/*", function(req, res) {
 	console.log("DELETE route hit");
 	console.log(req.params);
+});
+*/
+
+app.get("/api/notes/*", function(req, res) {
+	console.log('"view current note" route hit');
+	console.log(req.params[0]);
+	if (req.params[0]) {
+		Article.findById(req.params[0], function (err, article) { res.send(article.note) });
+	}
+});
+
+app.put("/api/notes/*", function(req, res) {
+	console.log('"make a note or edit current note" route hit');
+	console.log(req.params[0]);
+	if (req.params[0]) {
+		Article.findById(req.params[0], function (err, article) {
+			if(article) {
+				console.log(article);
+				//if (article.note)
+					res.send(article)
+			}
+				
+		});
+	}
 });
 
 app.delete("/api/headlines/*", function(req, res) {

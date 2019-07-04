@@ -192,7 +192,7 @@ $(document).ready(function() {
 		// If we actually have data typed into the note input field, format it
 		// and post it to the "/api/notes" route and send the formatted noteData as well
 		if (newNote) {
-			noteData = { _headlineId: $(this).data("article")._id, noteText: newNote };
+			noteData = { _headlineId: $(this).data("article")._id, noteText: note };
 			$.post("/api/notes", noteData).then(function() {
 				// When complete, close the modal
 				bootbox.hideAll();

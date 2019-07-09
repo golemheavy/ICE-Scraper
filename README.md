@@ -6,9 +6,9 @@ Internet Content Extractor site scraper utility
 
 This project is a utility for scraping news sites. Currently the project is set up to use the science news site [quantamagazine.org](https://www.quantamagazine.org/).
 
-### Before You Begin
+### How to use install this project.
 
-1. Create a GitHub repo for this assignment and clone it to your computer. Any name will do -- just make sure it's related to this project in some fashion.
+1. Clone this site down to the server you intend to use with the command `git clone`
 
 2. Run `npm init`. When that's finished, install and save these npm packages:
 

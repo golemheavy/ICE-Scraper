@@ -16,7 +16,7 @@ This project uses several Node.js-based technologies and packages, including:
 * *Mongoose, which is an ODM for use with MongoDB*
 * *Axios*
 
-
+Axios is used by the server to conduct the asynchronous GET request of the news site, and Cheerio is used to target the appropriate selectors in order to retrieve the article URLs and headlines. Mongoose makes interacting with MongoDB simpler, as well as providing thenable class methods for retrieving and storing data in the MongoDB installation.
 
 ### How to use install this project.
 

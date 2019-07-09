@@ -11,8 +11,9 @@ This project is a utility for scraping news sites. Currently the project is set 
 This project uses several Node.js-based technologies and packages, including:
 
 * *ExpressJS (for the server)*
-* *Cheerio, for jQuery-like API*
-* *MongoDB, used to record article headlinesand links, and user notes*
+* *Cheerio, for its jQuery-like API*
+* *MongoDB, used to record article headlines and links, and user notes*
+* *Mongoose, which is an ODM for use with MongoDB*
 * *Axios*
 
 

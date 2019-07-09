@@ -28,7 +28,7 @@ Axios is used by the server to conduct the asynchronous GET request of the news 
 
 4. Navigate your browser to the URL of the listening server in order to interact with it.
 
-### How to use the project to scrap article headlines and annotate them.
+### How to use the project to scrap article headlines and annotate them. (UPDATE THIS, and add some features to project)
 
   1. Whenever a user visits your site, the app should scrape stories from a news outlet of your choice and display them for the user. Each scraped article should be saved to your application database. At a minimum, the app should scrape and display the following information for each article:
 

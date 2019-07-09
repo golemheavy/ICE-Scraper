@@ -38,6 +38,11 @@ const Note = mongoose.model("Note", noteSchema);
 
 const siteUrl = "https://www.quantamagazine.org/";
 
+const searchDivs = [
+	["div.hero-title","h1.h0"],
+	["div.two--large","h2.card__title"]
+];
+
 const headlines = {
 	unsaved : [] 
 };
@@ -51,29 +56,34 @@ app.get("/api/fetch", function(req, res) {
 		// An empty array to save the data that we'll scrape
 		let results = [];
 		
-		$("div.two--large").each(function(i, element) {
+		searchDivs.map(async function(item) {
+			console.log("searching " + item);
+			await $(`${item[0]}`).each(function(i, element) {
 			
-			let title = $(element).find("h2.card__title").text();
-			let link = $(element).find("a").attr("href");
+				let title = $(element).find(`${item[1]}`).text();
+				console.log(title);
+				let link = $(element).find("a").attr("href");
+				console.log(link);
 			
-			Article.find({ url: link }).then(function (mongoArticle) {	
-				if(mongoArticle.length > 0) {
-					console.log("This article already exists in MongoDB"); // so we will not add it to unsaved
-					console.log(mongoArticle);
-				}
-				else {
-					// Save these results in an object that we'll push into the results array we defined earlier
-					let article = new Article({headline: title, url: link});
-					results.push(article);
-				}
+				Article.find({ url: link }).then(function (mongoArticle) {	
+					if(mongoArticle.length > 0) {
+						console.log("This article already exists in MongoDB"); // so we will not add it to unsaved
+						console.log(mongoArticle);
+					}
+					else if (mongoArticle.length === 0){
+						// Save these results in an object that we'll push into the results array we defined earlier
+						console.log("saving result")
+						results.push(new Article({headline: title, url: link}));
+					}
+				});
 			});
 		});
 		
+		headlines.unsaved = results;
+		
+	}).then(function(results) {
 		console.log("results:\t");
 		console.log(results);
-		headlines.unsaved = results;
-	
-	}).then(function(results) {
 		res.send(results).status(200);
 	});
 });

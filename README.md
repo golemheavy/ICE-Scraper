@@ -1,11 +1,9 @@
 # ICE-Scraper
 Internet Content Extractor site scraper utility
 
-# All the News That's Fit to Scrape
-
 ### Overview
 
-In this assignment, you'll create a web app that lets users view and leave comments on the latest news. But you're not going to actually write any articles; instead, you'll flex your Mongoose and Cheerio muscles to scrape news from another site.
+This project is a utility for scraping news sites. Currently the project is set up to use the science news site [quantamagazine.org](https://www.quantamagazine.org/).
 
 ### Before You Begin
 

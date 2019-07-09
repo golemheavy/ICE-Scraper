@@ -43,3 +43,13 @@ Axios is used by the server to conduct the asynchronous GET request of the news 
   2. Users should also be able to leave comments on the articles displayed and revisit them later. The comments should be saved to the database as well and associated with their articles. Users should also be able to delete comments left on articles. All stored comments should be visible to every user.
 
 * Beyond these requirements, be creative and have fun with this!
+
+### Next Steps
+
+There are several possible ways to improve this project. Some possible ways to extend it in the future include:
+
+1. Currently, only the top four featured articles are scraped from the target site. It should be a simple matter to add functionality using Cheerio in order to also retrieve headlines and links from the articles in sections further down the page.
+
+2. It could be configured to retrieve data from several news sites. The functionality could be manually extended in order to allow the user to choose from several different sites from which to scrape data.
+
+3. It seems theoretically possible to create a feature that will allow scraping data from any news site, without previously hard-coding the specific selectors needed. This feature would be more complex to develop, but in essence it entails creating a function which can recognize the form of the data needed (headline and URL), and automatically choose those items to scrape. It makes sense, at least as an incremental behavior, for the server to request confirmation from the user that it has identified the correct selectors for data scraping prior to scraping the site using those selectors. Over time, however, it is easy to envision a feature which both records the needed structure information from a variety of sites and updates them automatically in response to structural changes at the target news sites. Machine learning could definitely be employed in order to train the algorithm to recognize the items needed to perform the scrape. Presumably, the URL value would be simpler and easier to distinguish that the headline value, but it is reasonable to believe that such a feature is possible.

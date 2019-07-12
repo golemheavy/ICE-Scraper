@@ -82,9 +82,9 @@ app.get("/api/fetch", function(req, res) {
 	});
 });
 
-app.put("/api/headlines/:id", function(req, res) {
+app.put("/api/headlines/*", function(req, res) {
 	console.log("PUT route hit");
-	//let id = req.params[0];
+	let id = req.params[0];
 	if (id) { 
 		headlines.unsaved.map( x => {
 			if (x._id == id) {

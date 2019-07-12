@@ -24,7 +24,8 @@ const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
     headline:  String,
-    url: String
+    url: String,
+	summary: String
 });
 
 const Article = mongoose.model("Article", articleSchema);
@@ -55,6 +56,9 @@ app.get("/api/fetch", function(req, res) {
 			
 			let title = $(element).find("h2.card__title").text();
 			let link = $(element).find("a").attr("href");
+			let blurb = $(element).find("p").text();
+			
+			//summary: String
 			
 			Article.find({ url: link }).then(function (mongoArticle) {	
 				if(mongoArticle.length > 0) {
@@ -63,7 +67,7 @@ app.get("/api/fetch", function(req, res) {
 				}
 				else {
 					// Save these results in an object that we'll push into the results array we defined earlier
-					let article = new Article({headline: title, url: link});
+					let article = new Article({headline: title, url: link, summary: blurb});
 					results.push(article);
 				}
 			});
@@ -78,13 +82,13 @@ app.get("/api/fetch", function(req, res) {
 	});
 });
 
-app.put("/api/headlines/*", function(req, res) {
+app.put("/api/headlines/:id", function(req, res) {
 	console.log("PUT route hit");
-	let id = req.params[0];
+	//let id = req.params[0];
 	if (id) { 
 		headlines.unsaved.map( x => {
 			if (x._id == id) {
-				let article = new Article({headline: x.headline, url: x.url});
+				let article = new Article({headline: x.headline, url: x.url, summary: x.summary});
 				Article.find({ url: article.url }).then(function (mongoArticle) {
 					
 					if(mongoArticle.length > 0) {

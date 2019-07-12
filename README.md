@@ -30,19 +30,15 @@ Axios is used by the server to conduct the asynchronous GET request of the news 
 
 ### How to use the project to scrap article headlines and annotate them. (UPDATE THIS, and add some features to project)
 
-  1. Whenever a user visits your site, the app should scrape stories from a news outlet of your choice and display them for the user. Each scraped article should be saved to your application database. At a minimum, the app should scrape and display the following information for each article:
-
+  1. When you visit the home page (/), you will see any scraped articles which have been scraped but have not been saved. To scrape new articles from Quanta Magazine, click the button marked "Scrape New Articles." The scraped articles are initially only stored in server memory, at least until the user clicks the "Save Article" button. The only elements from the article which are scraped and displayed/saved will be:
+  
      * Headline - the title of the article
 
      * Summary - a short summary of the article
 
      * URL - the url to the original article
 
-     * Feel free to add more content to your database (photos, bylines, and so on).
-
-  2. Users should also be able to leave comments on the articles displayed and revisit them later. The comments should be saved to the database as well and associated with their articles. Users should also be able to delete comments left on articles. All stored comments should be visible to every user.
-
-* Beyond these requirements, be creative and have fun with this!
+  2. Users are also able to make one or more notes which are assocated to a saved article. These notes are visible from the /saved page, after you click on a saved article's Notes button. The user can add or delete any number of notes on articles. All stored comments are visible to every user.
 
 ### Next Steps
 
